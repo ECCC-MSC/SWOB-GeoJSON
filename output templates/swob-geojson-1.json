@@ -1,0 +1,109 @@
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-64.094000, 53.558000, 439.500]
+  },
+  "properties": {
+    "dataset": "msc-observation-atmospheric-surface_weather-ra-1.1-ascii",
+    "swob": "2020-06-30-0000-CAFL-AUTO-swob.xml",
+    "tc_id": "AFL",
+    "stn_nam": "CHURCHILL FALLS",
+    "clim_id": "8501130",
+    "msc_id": "8501130",
+    "obs_date_tm": "2020-06-30T00:00:00.000Z",
+    "station_type": 4,
+    "air_temp": 20.9,
+    "air_temp_uom": "°C",
+    "air_temp_qa": 100
+    "pcpn_gag_wt_fltrd": 527.0,
+    "pcpn_gag_wt_fltrd_uom": "kg/m²",
+    "pcpn_gag_wt_fltrd_qa": 100,
+    "rel_hum": "MSNG"
+    "rel_hum_uom": "%",
+    "rel_hum_data_flags": 4  
+  }
+},
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-64.094000, 53.558000, 439.500]
+  },
+  "properties": {
+    "dataset": "msc-observation-atmospheric-surface_weather-ra-1.1-ascii",
+    "swob": "2020-06-30-0100-CAFL-AUTO-swob.xml",
+    "tc_id": "AFL",
+    "stn_nam": "CHURCHILL FALLS",
+    "clim_id": "8501130",
+    "msc_id": "8501130",
+    "obs_date_tm": "2020-06-30T01:00:00.000Z",
+    "station_type": 4,
+    "air_temp": 18.9,
+    "air_temp_uom": "°C",
+    "air_temp_qa": 100
+    "pcpn_gag_wt_fltrd": 527.0,
+    "pcpn_gag_wt_fltrd_uom": "kg/m²",
+    "pcpn_gag_wt_fltrd_qa": 100,
+    "rel_hum": "MSNG"
+    "rel_hum_uom": "%",
+    "rel_hum_data_flags": 4  
+  }
+},
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-121.296950, 57.496780, 835.000]
+  },
+  "properties": {
+    "dataset": "partners-observation-atmospheric-surface_weather-bc_forestry-1.1-ascii",
+    "swob": "2020-06-30-0300-bc-wmb-120-AUTO-swob.xml",
+    "stn_nam": "SILVER",
+    "msc_id": "BC_WMB_120",
+    "data_pvdr": "BC-FLNR-BCWS",
+    "data_attrib_not": "Observational data provided by the Government of British Columbia: Ministry of Forests, Lands and Natural Resource Operations and Rural Development, BC Wildfire Service (BC-FLNRORD-BCWS). All rights reserved. | Données d’observation fournies par le Gouvernement de la Colombie-Britannique: Ministère des Forêts, des Terres, des Ressources publiques et du Développement rural, BC Wildfire Service (CB-FTRPDR-BCWS). Tous droits réservés.",
+    "obs_date_tm": "2020-06-30T01:00:00.000Z",
+    "station_type": 4,
+    "air_temp": 17.6,
+    "air_temp_uom": "°C",
+    "air_temp_qa": 100
+    "rnfl_amt_pst1hr": 0.0,
+    "rnfl_amt_pst1hr_uom": "mm",
+    "rnfl_amt_pst1hr_qa": 100,
+    "rel_hum": 46
+    "rel_hum_uom": "%",
+    "rel_hum_qa": 100,
+    "dwpt_temp": 5.9,
+    "dwpt_temp_uom": "°C",
+    "dwpt_temp_data_flags": 1
+  }
+},
+{
+  "type": "Feature",
+  "geometry": {
+    "type": "Point",
+    "coordinates": [-123.357000, 49.301670, 0.0]
+  },
+  "properties": {
+    "dataset": "msc-observation-atmospheric-marine-moored_buoy-1.3-ascii",
+    "swob": "2020-06-30-0030-4600304-AUTO-swob.xml",
+    "stn_nam": "Entrance to English Bay",
+    "wmo_synop_id": "46304",  
+    "msc_id": "9102001",
+    "obs_date_tm": "2020-06-30T04:00:00.000Z",
+    "station_type": 4,
+    "avg_air_temp_pst10mts": 18.1,
+    "avg_air_temp_pst10mts_uom": "°C",
+    "avg_air_temp_pst10mts_qa": 100
+    "pk_wave_hgt_pst20mts": 0.2,
+    "pk_wave_hgt_pst20mts_uom": "m",
+    "pk_wave_hgt_pst20mts_qa": 100,
+    "avg_stn_pres_pst10mts": 1011.5
+    "avg_stn_pres_pst10mts_uom": "hPa",
+    "avg_stn_pres_pst10mts_qa": 100,
+    "max_avg_wnd_spd_pst10mts": 6.5,
+    "max_avg_wnd_spd_pst10mts_uom": "km/h",
+    "max_avg_wnd_spd_pst10mts_qa": 100
+  }
+}
