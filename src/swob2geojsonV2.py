@@ -29,10 +29,8 @@
 # =================================================================
 
 import os
-import sys
 import logging
 import xml.etree.ElementTree as et
-import json
 
 LOGGER = logging.getLogger(__name__)
 
@@ -43,6 +41,7 @@ def parse_swob(swob_file):
     :param swob_path: file path to SWOB XML
     :returns: dictionary of SWOB
     """
+
     namespaces = {'gml': 'http://www.opengis.net/gml',
                   'om': 'http://www.opengis.net/om/1.0',
                   'xlink': 'http://www.w3.org/1999/xlink',
@@ -164,6 +163,7 @@ def swob2geojson(swob_file):
     :param swob_dict: swob in memory
     :returns: geojson
     """
+
     swob_dict = parse_swob(swob_file)
     json_output = {}
 

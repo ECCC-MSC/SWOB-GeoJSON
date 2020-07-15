@@ -32,57 +32,76 @@ import unittest
 import json
 import swob2geojsonV2 as swob2gjson
 
-def write_output(test_num, list_dict):
-    with open(test_num + '_result.json', 'w') as fp:
+
+def write_output(name, list_dict):
+    """
+    Helper used in generating potential outputs
+    param: name - String, name of xml file
+    param: list_dict - list, containing geojson dicts for multiple
+            geojson per file functionality
+    """
+    with open(name + '_result.json', 'w') as fp:
         for feature in list_dict:
             fp.write(json.dumps(feature, indent=4, sort_keys=True))
-            
+
+
 def read_json(file_name):
+    """
+    Helper used in reading master json templates and converting back to dicts
+    param: file_name - String, name of json file to load
+    """
     with open(file_name) as fp:
         return json.load(fp)
 
 
 class Sob2GeoJsonTest(unittest.TestCase):
     """Test suite for converting swobs to geojson"""
-    
+
     def test_CGCH_minute(self):
+        """Test converting CGCH minute swob into geojson"""
+
         test_file = 'test_files/2020-07-01-0007-CGCH-AUTO-minute-swob.xml'
         master_file = 'test_master_files/CGCH_minute_master.json'
         master_geojson = read_json(master_file)
         self.assertEqual(swob2gjson.swob2geojson(test_file),
                          master_geojson)
-        
-        
+
     def test_CAFC_minute(self):
+        """Test converting CAFC minute swob into geojson"""
+
         test_file = 'test_files/2020-07-01-0007-CAFC-AUTO-minute-swob.xml'
         master_file = 'test_master_files/CAFC_minute_master.json'
         master_geojson = read_json(master_file)
         self.assertEqual(swob2gjson.swob2geojson(test_file),
                          master_geojson)
-    
+
     def test_CPOX_minute(self):
+        """Test converting CPOX minute swob into geojson"""
+
         test_file = 'test_files/2020-06-08-0000-CPOX-AUTO-minute-swob.xml'
         master_file = 'test_master_files/CPOX_minute_master.json'
         master_geojson = read_json(master_file)
         self.assertEqual(swob2gjson.swob2geojson(test_file),
                          master_geojson)
-    
+
     def test_CAAW_minute(self):
+        """Test converting CAAW minute swob into geojson"""
+
         test_file = 'test_files/2020-06-08-0000-CAAW-AUTO-minute-swob.xml'
         master_file = 'test_master_files/CAAW_minute_master.json'
         master_geojson = read_json(master_file)
         self.assertEqual(swob2gjson.swob2geojson(test_file),
                          master_geojson)
-        
+
     def test_CYBQ_swob(self):
+        """Test converting CYBQ swob into geojson"""
+
         test_file = 'test_files/2020-05-31-0200-CYBQ-AUTO-swob.xml'
         master_file = 'test_master_files/CYBQ_swob_master.json'
         master_geojson = read_json(master_file)
         self.assertEqual(swob2gjson.swob2geojson(test_file),
                          master_geojson)
-        
-    
-        
+
 # main
 if __name__ == '__main__':
     unittest.main()
