@@ -40,9 +40,9 @@ def write_output(name, list_dict):
     param: list_dict - list, containing geojson dicts for multiple 
             geojson per file functionality
     """
-    with open(name + '_result.json', 'wb') as fp:
+    with open(name + '.json', 'wb') as fp:
         for feature in list_dict:
-            fp.write(json.dumps(feature, indent=4, sort_keys=True,
+            fp.write(json.dumps(feature, indent=4,
                                 ensure_ascii=False).encode('utf8'))
 
 
