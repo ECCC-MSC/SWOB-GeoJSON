@@ -37,12 +37,13 @@ def write_output(name, list_dict):
     """
     Helper used in generating potential outputs
     param: name - String, name of xml file
-    param: list_dict - list, containing geojson dicts for multiple
+    param: list_dict - list, containing geojson dicts for multiple 
             geojson per file functionality
     """
-    with open(name + '_result.json', 'w') as fp:
+    with open(name + '_result.json', 'wb') as fp:
         for feature in list_dict:
-            fp.write(json.dumps(feature, indent=4, sort_keys=True))
+            fp.write(json.dumps(feature, indent=4, sort_keys=True,
+                                ensure_ascii=False).encode('utf8'))
 
 
 def read_json(file_name):

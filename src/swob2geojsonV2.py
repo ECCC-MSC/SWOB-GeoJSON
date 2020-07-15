@@ -135,7 +135,7 @@ def parse_swob(swob_file):
                     value = nest_elem.attrib['value']
                 if 'uom' in nest_elem.attrib.keys():
                     if nest_elem.attrib['uom'] != 'unitless':
-                        uom = nest_elem.attrib['uom']
+                        uom = nest_elem.attrib['uom'].replace('\u00c2', '')
 
                 # element can be 1 of 3 things:
                 #   1. a data piece
