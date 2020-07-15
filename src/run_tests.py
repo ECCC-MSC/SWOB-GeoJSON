@@ -51,7 +51,7 @@ def read_json(file_name):
     Helper used in reading master json templates and converting back to dicts
     param: file_name - String, name of json file to load
     """
-    with open(file_name) as fp:
+    with open(file_name, 'rb') as fp:
         return json.load(fp)
 
 

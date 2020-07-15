@@ -102,7 +102,7 @@ def parse_swob(swob_file):
                     else:
                         element_name = element.attrib[key]
                 else:
-                    properties["{}_{}".format(element_name, key)] = (
+                    properties["{}-{}".format(element_name, key)] = (
                             element.attrib[key])
 
     # set up cords and time stamps
@@ -124,6 +124,7 @@ def parse_swob(swob_file):
     result_elements = list(result_tree[0].iter())
 
     last_element = ''
+    code = 0
     for element in result_elements:
         nested = element.iter()
         for nest_elem in nested:
@@ -133,9 +134,19 @@ def parse_swob(swob_file):
                 name = nest_elem.attrib['name']
                 if 'value' in nest_elem.attrib.keys():
                     value = nest_elem.attrib['value']
+                    try:
+                        if '.' in value:
+                            value = float(value)
+                        else:
+                            value = int(value)
+                    except:
+                        pass
+                    
                 if 'uom' in nest_elem.attrib.keys():
                     if nest_elem.attrib['uom'] != 'unitless':
                         uom = nest_elem.attrib['uom'].replace('\u00c2', '')
+                        if uom == 'code':
+                            code = 1
 
                 # element can be 1 of 3 things:
                 #   1. a data piece
@@ -144,12 +155,18 @@ def parse_swob(swob_file):
                 if all([name != 'qa_summary', name != 'data_flag']):
                     properties[name] = value
                     if uom:
-                        properties[name + '_uom'] = uom
+                        properties["{}-{}".format(name, 'uom')] = uom
                     last_element = name
                 elif name == 'qa_summary':
-                    properties["{}_{}".format(last_element, 'qa')] = value
+                    properties["{}-{}".format(last_element, 'qa')] = value
                 elif name == 'data_flag':
-                    properties["{}_{}".format(last_element, 'data_flags')] = (
+                    properties["{}-{}-{}".format(last_element, 'data_flag',
+                                                 'uom')] = uom
+                    properties["{}-{}-{}".format(last_element, 'data_flag',
+                                                 'code_src')] = (
+                        nest_elem.attrib['code-src'])
+                    properties["{}-{}-{}".format(last_element, 'data_flag',
+                                                 'value')] = (
                             value)
 
         swob_values['properties'] = properties
