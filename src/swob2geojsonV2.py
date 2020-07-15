@@ -32,66 +32,73 @@ import os
 import sys
 import logging
 import xml.etree.ElementTree as et
+import json
 
 
 LOGGER = logging.getLogger(__name__)
 
-
 """
-Read swob at swob_path and return object 
+Read swob at swob_path and return object
 :param swob_path: file path to SWOB XML
 :returns: dictionary of SWOB
 """
+
+
 def parse_swob(swob_file):
-    namespaces = {'gml': 'http://www.opengis.net/gml', 
-              'om': 'http://www.opengis.net/om/1.0', 
-              'xlink': 'http://www.w3.org/1999/xlink',
-              'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-              'dset': 'http://dms.ec.gc.ca/schema/point-observation/2.0'}
-    
+    namespaces = {'gml': 'http://www.opengis.net/gml',
+                  'om': 'http://www.opengis.net/om/1.0',
+                  'xlink': 'http://www.w3.org/1999/xlink',
+                  'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+                  'dset': 'http://dms.ec.gc.ca/schema/point-observation/2.0'}
+
     swob_values = {}
     error = 0
     elevation = ''
     latitude = ''
     longitude = ''
-    
+
     # extract the swob xml source name '\\' is a windows filepath
     # if this is implemented on another OS make sure to fix the filepath split
     swob_name_split = swob_file.split('\\')
     swob_name = swob_name_split[len(swob_name_split) - 1]
-    
+
     # make sure the xml is parse-able
     try:
         xml_tree = et.parse(swob_file)
     except:
-        print("Error in parsing file")
+        LOGGER.exception("Error: file: " + str(swob_file) +
+                         " cannot be parsed as xml")
         error = 1
 
     if not error:
-        general_info_tree = xml_tree.findall('.//om:Observation/om:metadata/dset:set/dset:general', namespaces)
+        gen_path = './/om:Observation/om:metadata/dset:set/dset:general'
+        general_info_tree = (xml_tree.findall(gen_path, namespaces))
         general_info_elements = list(general_info_tree[0].iter())
         properties = {}
-        
+
         # extract swob dataset
         for element in general_info_elements:
             value_list = []
             if 'name' in element.attrib.keys():
                 if element.tag.split('}')[1] == 'dataset':
-                    properties[element.tag.split('}')[1]] = element.attrib['name'].replace('/', '-')
-                
+                    properties[element.tag.split('}')[1]] = (
+                        element.attrib['name'].replace('/', '-'))
+
         # add swob source name to properties
         properties["swob"] = swob_name
-        
+
         # extract ID related properties
-        identification_tree = xml_tree.findall('.//om:Observation/om:metadata/dset:set/dset:identification-elements', namespaces)
+        id_path = ('.//om:Observation/om:metadata/' +
+                   'dset:set/dset:identification-elements')
+        identification_tree = xml_tree.findall(id_path, namespaces)
         identification_elements = list(identification_tree[0].iter())
-        
+
         for element in identification_elements:
 
             if 'name' in element.attrib.keys():
                 name = element.attrib['name']
                 value = element.attrib['value']
-                
+
                 # This is the list of ID properties we want for our geoJson
                 # Feel free to add to it, make sure the property exists in the
                 # identification section of the xml!
@@ -111,25 +118,29 @@ def parse_swob(swob_file):
                     longitude = value
                 else:
                     pass
-               
+
         # set up cords and time stamps
         swob_values['coordinates'] = [longitude, latitude, elevation]
-        
-        time_sample = list(xml_tree.findall('.//om:Observation/om:samplingTime/gml:TimeInstant/gml:timePosition', namespaces)[0].iter())[0]
+
+        s_time = ('.//om:Observation/om:samplingTime/' +
+                  'gml:TimeInstant/gml:timePosition')
+        time_sample = list(xml_tree.findall(s_time, namespaces)[0].iter())[0]
         properties['obs_date_tm'] = time_sample.text
-        
-        time_result = list(xml_tree.findall('.//om:Observation/om:resultTime/gml:TimeInstant/gml:timePosition', namespaces)[0].iter())[0]
+
+        r_time = ('.//om:Observation/om:resultTime/' +
+                  'gml:TimeInstant/gml:timePosition')
+        time_result = list(xml_tree.findall(r_time, namespaces)[0].iter())[0]
         properties['processed_date_tm'] = time_result.text
-        
+
         # extract the result data from the swob
-        result_tree = xml_tree.findall('.//om:Observation/om:result/dset:elements', namespaces)
+        res_path = './/om:Observation/om:result/dset:elements'
+        result_tree = xml_tree.findall(res_path, namespaces)
         result_elements = list(result_tree[0].iter())
-        
+
         last_element = ''
         for element in result_elements:
             nested = element.iter()
             for nest_elem in nested:
-                result_val = []
                 value = ''
                 uom = ''
                 if 'name' in nest_elem.attrib.keys():
@@ -139,7 +150,7 @@ def parse_swob(swob_file):
                     if 'uom' in nest_elem.attrib.keys():
                         if nest_elem.attrib['uom'] != 'unitless':
                             uom = nest_elem.attrib['uom']
-                        
+
                     # element can be 1 of 3 things:
                     #   1. a data piece
                     #   2. a qa summary
@@ -153,49 +164,33 @@ def parse_swob(swob_file):
                         properties[last_element + '_qa'] = value
                     elif name == 'data_flag':
                         properties[last_element + '_data_flags'] = value
-        
+
         swob_values['properties'] = properties
-        
+
         return swob_values
-        
-"""
-visualizes the extracted data from the SWOB xml file
-param: swob_dict: swob in memory
-"""
-def visualizeDict(dic):
-    for key in dic.keys():
-            print(key)
-            if isinstance(dic[key], dict):    
-                for key2 in dic[key]:
-                    print('    ' + str(key2) + ' ' + str(dic[key][key2]))
-            else:
-                print('    ' + str(dic[key]))
-            print('')
-        
 
 """
 Produce GeoJSON from dict
 :param swob_dict: swob in memory
 :returns: geojson
 """
+
+
 def swob2geojson(swob_dict):
     json_output = {}
-    
+
+    if len(swob_dict) == 0:
+        LOGGER.error('Error: dictionary passed into swob2geojson is blank')
+        return
+
     # verify dictionary contains the data we need to avoid error
     if 'properties' in swob_dict.keys() and 'coordinates' in swob_dict.keys():
         json_output['type'] = 'Feature'
-        json_output["geometry"] = {"type": "Point", "coordinates": swob_dict['coordinates']}
+        json_output["geometry"] = (
+            {"type": "Point", "coordinates": swob_dict['coordinates']})
         json_output["properties"] = swob_dict["properties"]
         return json_output
     else:
-        print('Error, incorrectly formated dictionary passed into swob2geojson')
+        LOGGER.error('Error: dictionary passed into swob2geojson lacks' +
+                     ' required fields')
         return
-    
-#Testing
-string = 'C:\\Users\\Robert\\Desktop\\swob2geojson\\2020-06-08-0000-CAAW-AUTO-minute-swob.xml'
-swob_dict = parse_swob(string)
-
-geoJson = swob2geojson(swob_dict)
-
-visualizeDict(geoJson)
-#print(geoJson)
