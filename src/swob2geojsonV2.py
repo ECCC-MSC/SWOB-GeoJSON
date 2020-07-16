@@ -59,8 +59,9 @@ def parse_swob(swob_file):
     # make sure the xml is parse-able
     try:
         xml_tree = et.parse(swob_file)
-    except:
-        LOGGER.exception("Error: file: " + str(swob_file) +
+    except (FileNotFoundError, et.ParseError):
+
+        LOGGER.critical("Error: file - " + str(swob_file) +
                          " cannot be parsed as xml")
         return
 
@@ -139,9 +140,9 @@ def parse_swob(swob_file):
                             value = float(value)
                         else:
                             value = int(value)
-                    except:
+                    except ValueError:
                         pass
-                    
+
                 if 'uom' in nest_elem.attrib.keys():
                     if nest_elem.attrib['uom'] != 'unitless':
                         uom = nest_elem.attrib['uom'].replace('\u00c2', '')
@@ -184,8 +185,12 @@ def swob2geojson(swob_file):
     swob_dict = parse_swob(swob_file)
     json_output = {}
 
-    if len(swob_dict) == 0:
-        LOGGER.error('Error: dictionary passed into swob2geojson is blank')
+    try:
+        if len(swob_dict) == 0:
+            LOGGER.error('Error: dictionary passed into swob2geojson is blank')
+            return
+    except TypeError:
+        LOGGER.critical("Error: NoneType passed in as swob dict")
         return
 
     # verify dictionary contains the data we need to avoid error

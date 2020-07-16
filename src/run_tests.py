@@ -37,7 +37,7 @@ def write_output(name, list_dict):
     """
     Helper used in generating potential outputs
     param: name - String, name of xml file
-    param: list_dict - list, containing geojson dicts for multiple 
+    param: list_dict - list, containing geojson dicts for multiple
             geojson per file functionality
     """
     with open(name + '.json', 'wb') as fp:
@@ -102,6 +102,7 @@ class Sob2GeoJsonTest(unittest.TestCase):
         master_geojson = read_json(master_file)
         self.assertEqual(swob2gjson.swob2geojson(test_file),
                          master_geojson)
+
 
 # main
 if __name__ == '__main__':
