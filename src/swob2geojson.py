@@ -78,7 +78,7 @@ def parse_swob(swob_file):
                     element.attrib['name'].replace('/', '-'))
 
     # add swob source name to properties
-    properties["swob"] = swob_name
+    properties["id"] = swob_name
 
     # extract ID related properties
     id_path = ('.//om:Observation/om:metadata/' +
@@ -125,7 +125,6 @@ def parse_swob(swob_file):
     result_elements = list(result_tree[0].iter())
 
     last_element = ''
-    code = 0
     for element in result_elements:
         nested = element.iter()
         for nest_elem in nested:

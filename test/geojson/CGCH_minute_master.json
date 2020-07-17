@@ -10,7 +10,7 @@
     },
     "properties": {
         "dataset": "msc-observation-atmospheric-surface_weather-ca-1.2-ascii",
-        "swob": "2020-07-01-0007-CGCH-AUTO-minute-swob.xml",
+        "id": "2020-07-01-0007-CGCH-AUTO-minute-swob.xml",
         "date_tm-uom": "datetime",
         "date_tm-value": "2020-07-01T00:07:00.000Z",
         "stn_nam-uom": "unitless",

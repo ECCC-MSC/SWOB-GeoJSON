@@ -10,7 +10,7 @@
     },
     "properties": {
         "dataset": "nav_canada-observation-atmospheric-surface_weather-awos-2.1-binary",
-        "swob": "2020-05-31-0200-CYBQ-AUTO-swob.xml",
+        "id": "2020-05-31-0200-CYBQ-AUTO-swob.xml",
         "wmo_synop_id-uom": "unitless",
         "wmo_synop_id-value": "71272",
         "stn_nam-uom": "unitless",
