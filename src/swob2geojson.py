@@ -92,13 +92,13 @@ def parse_swob(swob_file):
             for key in element.attrib.keys():
                 if key == 'name':
                     if element.attrib[key] == 'stn_elev':
-                        elevation = element.attrib['value']
+                        elevation = float(element.attrib['value'])
                         break
                     elif element.attrib[key] == 'lat':
-                        latitude = element.attrib['value']
+                        latitude = float(element.attrib['value'])
                         break
                     elif element.attrib[key] == 'long':
-                        longitude = element.attrib['value']
+                        longitude = float(element.attrib['value'])
                         break
                     else:
                         element_name = element.attrib[key]
@@ -146,8 +146,6 @@ def parse_swob(swob_file):
                 if 'uom' in nest_elem.attrib.keys():
                     if nest_elem.attrib['uom'] != 'unitless':
                         uom = nest_elem.attrib['uom'].replace('\u00c2', '')
-                        if uom == 'code':
-                            code = 1
 
                 # element can be 1 of 3 things:
                 #   1. a data piece
