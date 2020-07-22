@@ -134,12 +134,20 @@ def parse_swob(swob_file):
                 name = nest_elem.attrib['name']
                 if 'value' in nest_elem.attrib.keys():
                     value = nest_elem.attrib['value']
+                    
+                    # Checks to see if value string can be casted to float/int
                     try:
                         if '.' in value:
                             value = float(value)
                         else:
                             value = int(value)
                     except ValueError:
+                        msg = (('Warning the value: "{}" could not be ' +
+                               'converted to a number, this can be because ' +
+                               'of an improperly formatted number value or ' +
+                               'because of an intentional string value')
+                               .format(value))
+                        LOGGER.debug(msg)
                         pass
 
                 if 'uom' in nest_elem.attrib.keys():
