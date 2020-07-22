@@ -3,8 +3,8 @@
 # Author: Thinesh Sornalingam <thinesh.sornalingam@canada.ca>,
 #         Robert Westhaver <robert.westhaver.eccc@gccollaboration.ca>
 #
-# Copyright (c) 2020 Thinesh Sornalingam, 
-#                    Robert Westhaver
+# Copyright (c) 2020 Thinesh Sornalingam
+# Copyright (c) 2020 Robert Westhaver
 #
 # Permission is hereby granted, free of charge, to any person
 # obtaining a copy of this software and associated documentation
@@ -61,8 +61,8 @@ def parse_swob(swob_file):
     try:
         xml_tree = et.parse(swob_file)
     except (FileNotFoundError, et.ParseError):
-        msg = "Error: file - " + str(swob_file) + " cannot be parsed as xml"
-        LOGGER.critical(msg)
+        msg = 'Error: file {} cannot be parsed as xml'.format(swob_file)
+        LOGGER.debug(msg)
         raise RuntimeError(msg)
 
     gen_path = './/om:Observation/om:metadata/dset:set/dset:general'
@@ -184,11 +184,12 @@ def swob2geojson(swob_file):
 
     try:
         if len(swob_dict) == 0:
-            LOGGER.error('Error: dictionary passed into swob2geojson is blank')
-            return
+            msg = ('Error: dictionary passed into swob2geojson is blank')
+            LOGGER.debug(msg)
+            raise RuntimeError(msg)
     except TypeError:
         msg = "Error: NoneType passed in as swob dict"
-        LOGGER.critical(msg)
+        LOGGER.debug(msg)
         raise RuntimeError(msg)
 
     # verify dictionary contains the data we need to avoid error
@@ -201,5 +202,5 @@ def swob2geojson(swob_file):
     else:
         msg = ('Error: dictionary passed into swob2geojson lacks' +
                ' required fields')
-        LOGGER.critical(msg)
+        LOGGER.debug(msg)
         raise RuntimeError(msg)
